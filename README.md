@@ -4,6 +4,30 @@ Repositorio de la materia **IA Generativa para Datos Biomédicos** — Universid
 
 ---
 
+## 🔄 Cómo traer cambios del template original
+
+Este repositorio fue creado a partir de un **template**. Para incorporar actualizaciones que el docente publique en el template original, seguí estos pasos:
+
+**1. Solo la primera vez — agregar el template como remoto `upstream`:**
+```bash
+git remote add upstream https://github.com/mszsorondo/ia-biomed.git
+```
+
+**2. Traer los cambios del template e incorporarlos a tu rama:**
+```bash
+git fetch upstream
+git merge upstream/main --allow-unrelated-histories
+```
+
+**3. Si hay nuevas dependencias, reinstalá:**
+```bash
+cd entrega1 && npm install
+```
+
+> **Tip:** Repetí los pasos 2 y 3 cada vez que el docente avise que subió cambios al template.
+
+---
+
 ## 📁 Estructura del Repositorio
 
 ```
