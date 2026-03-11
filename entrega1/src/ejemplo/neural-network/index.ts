@@ -36,7 +36,7 @@ function embeddingToWord(vec: number[] | undefined): { word: string, confidence:
  */
 export function loadCorpusAndVocab(): string[][] {
     // Load our corpus from the root directory
-    const corpusPath = new URL('../../../corpus.txt', import.meta.url).pathname;
+    const corpusPath = new URL('../corpus.txt', import.meta.url).pathname;
     const rawText = fs.readFileSync(corpusPath, 'utf-8');
 
     // Tokenize the sentences
@@ -108,11 +108,11 @@ export async function train(trainingData: { input: number[], output: number[] }[
     // Train the network
     const trainer = new Trainer(myNetwork);
     const stats = trainer.train(trainingData, {
-        rate: 0.1,
-        iterations: 5000,
-        error: 0.005,
-        shuffle: true,
-        log: 1000
+        rate: 0.1,        // Learning rate: controls the step size at each gradient descent update (higher = faster but less stable)
+        iterations: 5000, // Maximum number of training epochs to run before stopping
+        error: 0.005,     // Target mean squared error threshold; training stops early if this is reached
+        shuffle: true,    // Randomize the order of training samples each epoch to reduce overfitting
+        log: 1000         // Print training progress to the console every N iterations
     });
 
     console.log(`\nTraining complete in ${stats.iterations} iterations with error ${stats.error.toFixed(4)}.`);

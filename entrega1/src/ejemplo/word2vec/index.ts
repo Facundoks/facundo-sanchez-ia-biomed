@@ -3,7 +3,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const corpusPath = new URL('../../../corpus.txt', import.meta.url).pathname;
+const corpusPath = new URL('../corpus.txt', import.meta.url).pathname;
 const modelPath = new URL('./vectors.txt', import.meta.url).pathname;
 
 /**
@@ -102,6 +102,21 @@ export async function evaluateCbow() {
             const vocab = model.getVectors().map(v => v.word);
 
             console.log("\n--- Inferring context around 'sat on' ---");
+            /*
+            Here's what mostSimilar does step by step:
+
+                    Splits the input string into individual tokens (e.g. 'sat on' → ['sat', 'on'])
+                    Looks up the vector for each token in the model
+                    Averages the vectors of all valid tokens (words found in the vocabulary) into a single combined vector
+                    Finds nearest neighbors to that averaged vector across the whole vocabulary, returning words sorted by cosine similarity
+                    So model.mostSimilar('cat mat', vocab.length) is essentially asking: "what word lives closest to the midpoint between 'cat' and 'mat' in vector space?"
+
+                    This is why the comment at the bottom of 
+
+                    evaluateMiddleWord()
+                    notes that order doesn't matter — 'cat mat' and 'mat cat' produce the exact same averaged vector, and therefore the exact same results.
+            */
+
             const satOn = model.mostSimilar('sat on', vocab.length) as { word: string, dist: number }[];
             if (satOn && satOn.length > 0) {
                 const probabilities = softmax(satOn.map(n => n.dist));
@@ -124,69 +139,12 @@ export async function evaluateCbow() {
     });
 }
 
-/**
- * Loads the trained vectors.txt model and calculates the average between two words
- * to predict the contextual middle word.
- */
-export async function evaluateMiddleWord() {
-    return new Promise<void>((resolve, reject) => {
-        w2v.loadModel(modelPath, (error, model) => {
-            if (error) {
-                console.error("Error loading model:", error);
-                reject(error);
-                return;
-            }
 
-            const vocab = model.getVectors().map(v => v.word);
-
-            // We want to find the middle between "cat" and "mat" 
-            const word1 = "cat";
-            const word2 = "mat";
-
-            console.log(`\n--- Inferring middle word between '${word1} ${word2}' ---`);
-
-            // mostSimilar averages all the valid words found in the string before looking up Neighbors!
-            const middleWords = model.mostSimilar(`${word1} ${word2}`, vocab.length) as { word: string, dist: number }[];
-
-            if (middleWords && middleWords.length > 0) {
-                const probabilities = softmax(middleWords.map(n => n.dist));
-                middleWords.forEach((n, i) => {
-                    console.log(`${n.word}: Similarity ${n.dist.toFixed(4)} | Probability ${(probabilities[i] * 100).toFixed(2)}%`);
-                });
-            } else {
-                console.log(`Could not find vectors for '${word1}' and '${word2}'`);
-            }
-
-            console.log(`\n--- Inferring middle word between '${word2} ${word1}' ---`);
-            const reverseMiddleWords = model.mostSimilar(`${word2} ${word1}`, vocab.length) as { word: string, dist: number }[];
-
-            if (reverseMiddleWords && reverseMiddleWords.length > 0) {
-                const reverseProbabilities = softmax(reverseMiddleWords.map(n => n.dist));
-                reverseMiddleWords.forEach((n, i) => {
-                    console.log(`${n.word}: Similarity ${n.dist.toFixed(4)} | Probability ${(reverseProbabilities[i] * 100).toFixed(2)}%`);
-                });
-            } else {
-                console.log(`Could not find vectors for '${word2}' and '${word1}'`);
-            }
-
-            /* 
-             * Explanation: 
-             * Because Continuous Bag of Words (CBOW) fundamentally just mathematically averages 
-             * the word vectors within the training window together to predict the target context, 
-             * it completely loses any concept of sequential order. 
-             * 'cat sat on mat' and 'mat sat on cat' create the exact same mathematical average!
-             */
-
-            resolve();
-        });
-    });
-}
 
 export async function main() {
     try {
         await train();
         await evaluate();
-        await evaluateMiddleWord();
     } catch (error) {
         console.error("Execution failed:", error);
         process.exit(1);

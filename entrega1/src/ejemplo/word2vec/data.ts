@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const corpusPath = new URL('./corpus.txt', import.meta.url);
+const corpusPath = new URL('../corpus.txt', import.meta.url);
 const text = fs.readFileSync(corpusPath, 'utf-8').trim();
 
 // Parse words
