@@ -1,30 +1,33 @@
-# AIG4B - Clase 1: Fundamentos de AI Generativa. 
+# AIG4B - Entrega 1: Fundamentos de AI Generativa. 
 
-Este repositorio contiene los ejercicios prácticos y ejemplos interactivos para la primera clase. El código está dividido en conceptos fundamentales de Inteligencia Artificial Clásica y ejemplos de Modelos Generativos modernos (LLMs).
-
----
-
-## 💡 Sección 1: Ejemplos Conceptuales (`src/ejemplo`)
-
-Ejemplos didácticos de conceptos fundamentales de IA. No requieren ninguna clave de API — corren completamente de forma local usando la librería de embeddings `word2vec` y la red neuronal `synaptic`.
-
-### `src/ejemplo/word2vec`
-Exploramos los fundamentos matemáticos de los **Embeddings** (Vectores de Palabras) y cómo el lenguaje puede ser representado estadísticamente en el espacio.
-- **Comando:** `npm run start`
-- Entrena un modelo Word2Vec sobre el corpus local `corpus.txt`.
-- Demuestra similitud del coseno para encontrar palabras relacionadas (ej: distancia vectorial entre `cat` y `dog`).
-- Expone la pérdida de orden secuencial en modelos CBOW como limitación clave.
-
-### `src/ejemplo/neural-network`
-Construimos una Red Neuronal Feed-Forward para la predicción de la próxima palabra.
-- **Comando:** `npm run start:nn`
-- Transforma el vocabulario de 10 palabras en representaciones **One-Hot (Embeddings)**.
-- Entrena una red de 1 Capa Oculta usando la librería JavaScript nativa `synaptic`.
-- Devuelve una distribución probabilística de la próxima palabra más probable en la oración.
+Este directorio contiene los ejercicios prácticos y ejemplos interactivos para la primera entrega. El código contiene ejemplos de Modelos Generativos modernos (LLMs) usando la API de Google Gemini.
 
 ---
 
-## 📝 Sección 2: Entregable — IA Generativa y APIs (`src/entrega`)
+## 🚀 Cómo correr los ejercicios
+
+```bash
+cd entrega1
+npm install
+
+# 1. Copiar el archivo de configuración y agregar tu API Key
+cp .env.example .env
+# Editá .env y pegá tu clave: GEMINI_API_KEY="tu-clave-aqui"
+# Obtené tu clave gratuita en: https://aistudio.google.com/app/apikey
+
+# Ejercicio 1 — Conexión básica
+npm run start:llm:01
+
+# Ejercicio 2 — Hiperparámetros
+npm run start:llm:02
+
+# Ejercicio 3 — Prompt Engineering
+npm run start:llm:03
+```
+
+---
+
+## 📝 Entregable — IA Generativa y APIs (`src/entrega`)
 
 Ejercitaciones para integrar Modelos de Lenguaje Grande (LLMs) mediante la **API de Google Gemini**.
 

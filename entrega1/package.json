@@ -1,11 +1,9 @@
 {
-  "name": "class1",
+  "name": "entrega1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --experimental-specifier-resolution=node --loader ts-node/esm src/ejemplo/word2vec/index.ts",
-    "start:nn": "node --experimental-specifier-resolution=node --loader ts-node/esm src/ejemplo/neural-network/index.ts",
     "start:llm:01": "node --experimental-specifier-resolution=node --loader ts-node/esm src/entrega/01-primera-llamada.ts",
     "start:llm:02": "node --experimental-specifier-resolution=node --loader ts-node/esm src/entrega/02-hiperparametros.ts",
     "start:llm:03": "node --experimental-specifier-resolution=node --loader ts-node/esm src/entrega/03-prompt-engineering.ts",
@@ -23,8 +21,6 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "dotenv": "^17.3.1",
-    "synaptic": "^1.1.4",
-    "word2vec": "^1.1.5"
+    "dotenv": "^17.3.1"
   }
 }
