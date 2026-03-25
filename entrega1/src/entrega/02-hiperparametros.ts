@@ -51,7 +51,7 @@ async function generarConConfig(
   label: string
 ) {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash-lite",
     generationConfig: config,
   });
 
@@ -247,7 +247,7 @@ async function parteE() {
 
   const prompt = "Nombrá los 4 tipos principales de tejido humano.";
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash-lite",
     generationConfig: { temperature: 0.0 },
   });
 
