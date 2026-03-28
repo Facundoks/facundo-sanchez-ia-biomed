@@ -32,6 +32,7 @@ dotenv.config();
 //         (ver README.md para instrucciones de cómo obtenerla)
 const API_KEY = process.env.GEMINI_API_KEY || "";
 
+// SOLUCIÓN -> .env creado y API_KEY agregada
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // ---------------------------------------------------------------------------
@@ -41,7 +42,7 @@ async function parteA() {
   console.log("=== PARTE A: Llamada Básica ===\n");
 
   // Usamos el modelo Gemini 1.5 Flash (gratuito, rápido)
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
   // Un prompt simple
   const prompt = "¿Qué es la hemoglobina y cuál es su función principal?";
@@ -67,7 +68,7 @@ async function parteB() {
 
   // El "system instruction" le da contexto/rol al modelo ANTES del prompt
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash-lite",
     systemInstruction:
       "Sos un médico clínico explicando resultados de laboratorio a un paciente. " +
       "Usá lenguaje simple, evitá jerga técnica innecesaria. " +
@@ -96,14 +97,20 @@ async function parteC() {
   // TODO 2: Creá un model con un systemInstruction que defina un rol biomédico.
   //         Ejemplos: patólogo, radiólogo, bioinformático, farmacólogo...
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash-lite",
     // TODO: Agregá un systemInstruction aquí
+    systemInstruction: "Sos un bioinformatico experto en genómica y transcriptómica. " +
+      "Usa lenguaje tecnico pero claro. " +
+      "Trabajas con profesionales en la medicina que saben de una parte de lo que realizas. " +
+      "No das diagnosticos, das informacion basada en datos." +
+      "Se conciso y no te explayes mas de lo necesario",
+    // SOLUCION -> Agregado los system promts
   });
 
   // TODO 3: Escribí un prompt relacionado a biomedicina.
   //         Puede ser sobre un diagnóstico, un resultado de laboratorio,
   //         una interacción farmacológica, interpretación de imágenes, etc.
-  const prompt = ""; // <-- Tu prompt aquí
+  const prompt = "Tengo un paciente con indicaciones de alto nivel de hemoglobina, y bajo nivel de ferritina. Que podria estar pasando?"; // <-- Tu prompt aquí
 
   if (!prompt) {
     console.log("⚠️  Completá el TODO 2 y 3 antes de correr esta parte.\n");

@@ -36,7 +36,7 @@ async function llamar(
   systemInstruction?: string
 ) {
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.0-flash",
+    model: "gemini-2.5-flash-lite",
     systemInstruction,
     generationConfig: { temperature: 0.3 }, // Baja para comparar mejor
   });
@@ -200,8 +200,34 @@ async function parteE() {
   // BONUS: ¿Podés hacer que el modelo detecte si le falta información
   //        y la pida explícitamente en vez de inventarla?
 
-  const miSystemInstruction = ""; // <-- TODO: Tu system instruction
-  const miPrompt = ""; // <-- TODO: Tu prompt
+  const miSystemInstruction = "Sos un hematólogo con 20 años de experiencia en un hospital universitario." +
+    "REGLAS ESTRICTAS: 1. Indicá nivel de evidencia para cada afirmación 2. Si ves que falta información o es necesario, pedí explícitamente" +// <-- TODO: Tu system instruction
+    "Usá terminología médica precisa";
+
+  const miPrompt = `Sos un hemtologo que recibe un caso clinico y debe dar un diagnostico, posees varios ejemplos: 
+  EJEMPLO 1:
+  Caso: Hombre 65 años, poliuria, polidipsia, pérdida de peso, glucemia 280 mg/dL
+  Diagnóstico: Diabetes mellitus tipo 2
+  Evidencia clave: Glucemia elevada + síntomas cardinales (poliuria, polidipsia)
+  Confianza: ALTA
+  Siguiente paso: HbA1c, perfil lipídico, función renal
+
+  EJEMPLO 2:
+  Caso: Mujer 30 años, palpitaciones, temblor, pérdida de peso, TSH 0.01, T4L 4.8
+  Diagnóstico: Hipertiroidismo (probable enfermedad de Graves)
+  Evidencia clave: TSH suprimida + T4 libre elevada + síntomas hipermetabólicos
+  Confianza: ALTA
+  Siguiente paso: Anticuerpos anti-receptor de TSH, ecografía tiroidea
+
+  PLAN DE ACCION:
+  1. Analizá el caso clínico
+  2. Proponé un diagnóstico principal
+  3. Mencioná diagnósticos diferenciales
+  4. Sugerí estudios confirmatorios
+
+  AHORA ANALIZÁ ESTE CASO:
+  ${CASO_CLINICO}
+  `; // <-- TODO: Tu prompt
 
   if (!miPrompt) {
     console.log("\n⚠️  Completá el TODO 2 para correr esta parte.\n");
