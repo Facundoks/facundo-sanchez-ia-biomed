@@ -32,6 +32,7 @@ dotenv.config();
 //         (ver README.md para instrucciones de cómo obtenerla)
 const API_KEY = process.env.GEMINI_API_KEY || "";
 
+// SOLUCIÓN -> .env creado y API_KEY agregada
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // ---------------------------------------------------------------------------
@@ -98,12 +99,18 @@ async function parteC() {
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash-lite",
     // TODO: Agregá un systemInstruction aquí
+    systemInstruction: "Sos un bioinformatico experto en genómica y transcriptómica. " +
+      "Usa lenguaje tecnico pero claro. " +
+      "Trabajas con profesionales en la medicina que saben de una parte de lo que realizas. " +
+      "No das diagnosticos, das informacion basada en datos." +
+      "Se conciso y no te explayes mas de lo necesario",
+    // SOLUCION -> Agregado los system promts
   });
 
   // TODO 3: Escribí un prompt relacionado a biomedicina.
   //         Puede ser sobre un diagnóstico, un resultado de laboratorio,
   //         una interacción farmacológica, interpretación de imágenes, etc.
-  const prompt = ""; // <-- Tu prompt aquí
+  const prompt = "Tengo un paciente con indicaciones de alto nivel de hemoglobina, y bajo nivel de ferritina. Que podria estar pasando?"; // <-- Tu prompt aquí
 
   if (!prompt) {
     console.log("⚠️  Completá el TODO 2 y 3 antes de correr esta parte.\n");
